@@ -30,6 +30,13 @@ Gt4CopilotLSPVersion >> arch [
 	self error: 'Unsupported OS'
 ]
 
+{ #category : #'as yet unclassified' }
+Gt4CopilotLSPVersion >> asDictionary [
+	^ {#arch -> self arch.
+		#version -> self version.
+		#os -> self os} asDictionary
+]
+
 { #category : #default }
 Gt4CopilotLSPVersion >> defaultVersion [
 	^ '1.339.0'
