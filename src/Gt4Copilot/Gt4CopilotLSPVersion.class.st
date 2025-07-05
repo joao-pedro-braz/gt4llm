@@ -2,22 +2,27 @@ Class {
 	#name : #Gt4CopilotLSPVersion,
 	#superclass : #Object,
 	#instVars : [
-		'version'
+		'versionString'
 	],
-	#category : #Gt4Copilot
+	#category : #'Gt4Copilot-LSP'
 }
 
 { #category : #'instance creation' }
 Gt4CopilotLSPVersion class >> default [
-	^ self with: self defaultVersion
+	^ self with: self defaultVersionString
+]
+
+{ #category : #default }
+Gt4CopilotLSPVersion class >> defaultVersionString [
+	^ '1.339.0'
 ]
 
 { #category : #'instance creation' }
 Gt4CopilotLSPVersion class >> with: aVersionString [
-	^ self new withVersion: aVersionString
+	^ self new versionString: aVersionString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Gt4CopilotLSPVersion >> arch [
 	| platform |
 	platform := OSPlatform current.
@@ -30,25 +35,27 @@ Gt4CopilotLSPVersion >> arch [
 	self error: 'Unsupported OS'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 Gt4CopilotLSPVersion >> asDictionary [
 	^ {#arch -> self arch.
-		#version -> self version.
-		#os -> self os} asDictionary
+		#versionString -> self versionString.
+		#os -> self os.
+		#extension -> self extension} asDictionary
 ]
 
-{ #category : #default }
-Gt4CopilotLSPVersion >> defaultVersion [
-	^ '1.339.0'
+{ #category : #accessing }
+Gt4CopilotLSPVersion >> extension [
+	^ OSPlatform current isWindows ifTrue: [ '.exe' ] ifFalse: [ '' ]
 ]
 
 { #category : #instantiation }
 Gt4CopilotLSPVersion >> initialize [
 	super initialize.
-	version ifNil: [ version := self defaultVersion ]
+	versionString
+		ifNil: [ versionString := Gt4CopilotLSPVersion defaultVersionString ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Gt4CopilotLSPVersion >> os [
 	| platform |
 	platform := OSPlatform current.
@@ -60,11 +67,11 @@ Gt4CopilotLSPVersion >> os [
 ]
 
 { #category : #accessing }
-Gt4CopilotLSPVersion >> version [
-	^ version
+Gt4CopilotLSPVersion >> versionString [
+	^ versionString
 ]
 
 { #category : #accessing }
-Gt4CopilotLSPVersion >> withVersion: anObject [
-	version := anObject
+Gt4CopilotLSPVersion >> versionString: aString [
+	versionString := aString
 ]
