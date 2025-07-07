@@ -7,6 +7,11 @@ Class {
 	#category : #'Gt4Copilot-LSP'
 }
 
+{ #category : #creation }
+Gt4CopilotLSPExecutable class >> default [
+	^ self forVersion: Gt4CopilotLSPVersion default
+]
+
 { #category : #accessing }
 Gt4CopilotLSPExecutable class >> defaultDirectory [
 	^ (FileLocator localDirectory / 'copilot-language-server') asPath
@@ -29,8 +34,7 @@ Gt4CopilotLSPExecutable class >> forVersion: aCopilotLSPVersion inDirectory: aPa
 
 { #category : #defaults }
 Gt4CopilotLSPExecutable class >> resolveName: aCopilotLSPVersion [
-	^ 'copilot-language-service-{versionString}{extension}'
-		format: aCopilotLSPVersion asDictionary
+	^ 'copilot-language-server{extension}' format: aCopilotLSPVersion asDictionary
 ]
 
 { #category : #defaults }
@@ -62,6 +66,7 @@ Gt4CopilotLSPExecutable >> downloadArchive [
 			| archive |
 			archive := self parent / self archiveName.
 			archive ensureDelete.
+			archive parent ensureCreateDirectory.
 
 			[ ZnClient new
 				url: self archiveUrl / self archiveName;
@@ -91,11 +96,9 @@ Gt4CopilotLSPExecutable >> extractArchive: aPathToZipArchive [
 
 	^ self
 		job: [ :job | 
-			self ensureDelete.
-			self ensureCreateFile.
-			(ZipArchive new
+			ZipArchive new
 				readFrom: aPathToZipArchive;
-				members) first extractTo: self binaryWriteStream.
+				extractAllTo: self parent.
 
 			aPathToZipArchive ]
 		named: 'Extracting...'

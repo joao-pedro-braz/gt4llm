@@ -7,7 +7,7 @@ Class {
 	#category : #'Gt4Copilot-LSP'
 }
 
-{ #category : #'instance creation' }
+{ #category : #creation }
 Gt4CopilotLSPVersion class >> default [
 	^ self with: self defaultVersionString
 ]

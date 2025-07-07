@@ -14,20 +14,34 @@ Class {
 	#category : #'Gt4Copilot-LSP'
 }
 
+{ #category : #creation }
+Gt4CopilotLSPClient class >> default [
+	^ self new executable: Gt4CopilotLSPExecutable default
+]
+
 { #category : #'as yet unclassified' }
 Gt4CopilotLSPClient >> arguments [
 	^ arguments ifNil: [ #('--stdio') ]
 ]
 
-{ #category : #initialization }
-Gt4CopilotLSPClient >> initialize [
-	super initialize.
-	version := Gt4CopilotLSPVersion new
+{ #category : #accessing }
+Gt4CopilotLSPClient >> executable [
+	^ executable
+]
+
+{ #category : #accessing }
+Gt4CopilotLSPClient >> executable: anObject [
+	executable := anObject
+]
+
+{ #category : #'as yet unclassified' }
+Gt4CopilotLSPClient >> send: aRequest andOn: aResponseClass do: aBlock [
+	^ self notYetImplemented
 ]
 
 { #category : #'as yet unclassified' }
 Gt4CopilotLSPClient >> start [
-	externalProcess := [ (GtExternalProcessBuilder new: self executablePath)
+	externalProcess := [ (GtExternalProcessBuilder new: self executable pathString)
 			args: self arguments;
 			pipeStdin;
 			pipeStdout;
